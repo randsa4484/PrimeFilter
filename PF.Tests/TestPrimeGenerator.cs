@@ -18,13 +18,12 @@ namespace PF.Tests
         }   
         
         [TestMethod]
-        public void TestOneIsPrime()
+        public void TestOneIsNotPrime()
         {
             var pg = new PrimesGenerator();
             var res = pg.GetPrimes(1);
 
-            Assert.IsTrue(res.Count() == 1);
-            Assert.IsTrue(res.First() == 1);
+            Assert.IsTrue(res.Count() == 0);
         } 
         
         [TestMethod]
@@ -32,6 +31,11 @@ namespace PF.Tests
         {
             var pg = new PrimesGenerator();
             var res = pg.GetPrimes(5);
+
+            var arr = res.ToArray();
+            Assert.AreEqual(2, arr[0]);
+            Assert.AreEqual(3, arr[1]);
+            Assert.AreEqual(5, arr[2]);
         }
     }
 }

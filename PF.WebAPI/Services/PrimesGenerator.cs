@@ -8,10 +8,8 @@ namespace PF.WebAPI.Services
     {
         public IEnumerable<int> GetPrimes(int limit)
         {
-            if(limit == 0)
+            if(limit < 2)
                 return new List<int>();
-            if(limit == 1)
-                return new List<int>{1};
 
             //Input: an integer n > 1.
             //  Let A be an array of Boolean values, indexed by integers 2 to n,
