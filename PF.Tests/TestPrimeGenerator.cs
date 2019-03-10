@@ -8,6 +8,38 @@ using PF.WebAPI.Services;
 namespace PF.Tests
 {
     [TestClass]
+    public class TestPrimeTester
+    {
+        [TestMethod]
+        public void Zero_Not_Prime()
+        {
+            var tester = new PrimeTester();
+            Assert.IsFalse(tester.NumberIsPrime(0));           
+        }     
+        [TestMethod]
+        
+        public void One_Not_Prime()
+        {
+            var tester = new PrimeTester();
+            Assert.IsFalse(tester.NumberIsPrime(1));
+        }
+        
+        [TestMethod]
+        public void NonInteger_Cant_Be_Prime()
+        {
+            var tester = new PrimeTester();
+            Assert.IsFalse(tester.NumberIsPrime(3.6));           
+        }
+
+        [TestMethod]
+        public void Negative_NonInteger_Cant_Be_Prime()
+        {
+            var tester = new PrimeTester();
+            Assert.IsFalse(tester.NumberIsPrime(-3789.345));           
+        }
+    }
+
+    [TestClass]
     public class TestPrimeGenerator
     {
         [TestMethod]
