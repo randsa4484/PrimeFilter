@@ -1,12 +1,15 @@
 
-[TestClass]
-public class TestPrimeGenerator
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace PF.Tests
 {
-
-    [TestMethod]
-    public void Go()
+    [TestClass]
+    public class TestPrimeGenerator
     {
-        Assert.IsTrue(true);
+        [TestMethod]
+        public void Go()
+        {
+            Assert.IsTrue(true);
+        }
     }
-
 }
