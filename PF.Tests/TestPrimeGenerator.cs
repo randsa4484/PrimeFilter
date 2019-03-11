@@ -2,8 +2,11 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using PF.WebAPI.Services;
+using PF.WebAPI.Services.Filtering;
 
 namespace PF.Tests
 {
@@ -15,19 +18,17 @@ namespace PF.Tests
         {
             var initialiser = new Moq.Mock<IPrimeGeneratorInitialiser>();
             initialiser.Setup(x => x.Limit).Returns(0);
-            var pg = new SieveOfEratosthenes(initialiser.Object);
-            var res = pg.GeneratePrimes();
+            var res = CreateGenerator(initialiser);
 
             Assert.IsTrue(!res.Any());
-        }   
-        
+        }
+
         [TestMethod]
         public void TestOneIsNotPrime()
         {
             var initialiser = new Moq.Mock<IPrimeGeneratorInitialiser>();
             initialiser.Setup(x => x.Limit).Returns(1);
-            var pg = new SieveOfEratosthenes(initialiser.Object);
-            var res = pg.GeneratePrimes();
+            var res = CreateGenerator(initialiser);
 
             Assert.IsTrue(!res.Any());
         } 
@@ -40,12 +41,7 @@ namespace PF.Tests
 
             var initialiser = new Moq.Mock<IPrimeGeneratorInitialiser>();
             initialiser.Setup(x => x.Limit).Returns(200);
-            var pg = new SieveOfEratosthenes(initialiser.Object);
-            var s = new Stopwatch();
-            s.Start();
-            var res = pg.GeneratePrimes();
-            s.Stop();
-            System.Console.WriteLine("Took {0} seconds", s.Elapsed.TotalSeconds);
+            var res = CreateGenerator(initialiser);
             var arr = res.ToArray();
             Assert.AreEqual(2, arr[0]);
             Assert.AreEqual(3, arr[1]);
@@ -55,6 +51,13 @@ namespace PF.Tests
             var testStr = string.Join(",", bunchOfPrimes);
 
             Assert.AreEqual(testStr, resStr);
+        }
+
+        private static IEnumerable<int> CreateGenerator(Mock<IPrimeGeneratorInitialiser> initialiser)
+        {
+            var pg = new SieveOfEratosthenes(new Moq.Mock<ILogger<SieveOfEratosthenes>>().Object, initialiser.Object);
+            var res = pg.Primes;
+            return res;
         }
     }
 }

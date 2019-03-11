@@ -1,15 +1,16 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace PF.WebAPI.Services
+namespace PF.WebAPI.Services.Filtering
 {
-    public class BruteForcePrimeTester
+    public class BruteForcePrimeTester : IPrimeTester
     {
         private readonly IOrderedEnumerable<int> _primes;
   
         public BruteForcePrimeTester(IPrimesGenerator primesGenerator)
         {
-            _primes = primesGenerator.GeneratePrimes().OrderBy(x => x);
+            _primes = primesGenerator.Primes.OrderBy(x => x);
 
             // We are testing a number is prime by testing its divisibility
             // by all primes less than its square root.
@@ -23,7 +24,13 @@ namespace PF.WebAPI.Services
 
         public int MaxValueSupported { get; }
         
-        public bool NumberIsPrime(double n)
+        public async Task<bool> NumberIsPrime(double n)
+        {
+            throw new NotImplementedException();
+            //await Task.Run(NumberIsPrimeImp(n));
+        }
+
+        public bool NumberIsPrimeImp(double n)
         {
             // treat -ve and +ive values equally 
             var absValue = Math.Abs(n);

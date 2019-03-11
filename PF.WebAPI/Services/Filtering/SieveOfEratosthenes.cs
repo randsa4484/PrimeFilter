@@ -1,21 +1,44 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
-namespace PF.WebAPI.Services
+namespace PF.WebAPI.Services.Filtering
 {
     public class SieveOfEratosthenes : IPrimesGenerator
     {
+        private readonly ILogger<SieveOfEratosthenes> _logger;
         private readonly int _limit;
+        private IEnumerable<int> _primes;
 
-        public SieveOfEratosthenes(IPrimeGeneratorInitialiser initialiser)
+        public SieveOfEratosthenes(ILogger<SieveOfEratosthenes> logger, IPrimeGeneratorInitialiser initialiser)
         {
             if(initialiser == null) throw new NullReferenceException();
+            _logger = logger;
 
             _limit = initialiser.Limit;
         }
 
-        public IEnumerable<int> GeneratePrimes()
+        public void Initialise()
+        {
+            var primes = GeneratePrimes().ToList();
+            _logger.LogInformation($"Sieve of Eratosthenes generated {primes.Count()} primes from {primes.Min()} to {primes.Max()}");
+            _primes = primes;
+        }
+
+        public IEnumerable<int> Primes
+        {
+            get
+            {
+                if (_primes == null)
+                {
+                    Initialise();
+                }
+                return _primes;
+            }
+        }
+
+        private IEnumerable<int> GeneratePrimes()
         {
             if(_limit < 2)
                 return new List<int>();
@@ -51,5 +74,7 @@ namespace PF.WebAPI.Services
    
             return dictionary.Where(d => d.Value).Select(d => d.Key).ToList();
         }
+
+   
     }
 }
