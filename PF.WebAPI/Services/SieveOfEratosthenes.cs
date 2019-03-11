@@ -4,11 +4,20 @@ using System.Linq;
 
 namespace PF.WebAPI.Services
 {
-    public class PrimesGenerator
+    public class SieveOfEratosthenes : IPrimesGenerator
     {
-        public IEnumerable<int> GetPrimes(int limit)
+        private readonly int _limit;
+
+        public SieveOfEratosthenes(IPrimeGeneratorInitialiser initialiser)
         {
-            if(limit < 2)
+            if(initialiser == null) throw new NullReferenceException();
+
+            _limit = initialiser.Limit;
+        }
+
+        public IEnumerable<int> GeneratePrimes()
+        {
+            if(_limit < 2)
                 return new List<int>();
 
             //Input: an integer n > 1.
@@ -22,17 +31,17 @@ namespace PF.WebAPI.Services
 
             var dictionary = new Dictionary<int, bool>();
 
-            for(var i = 2; i <= limit; i++)
+            for(var i = 2; i <= _limit; i++)
                 dictionary.Add(i, true);
 
-            var maxRootVal = (int)Math.Sqrt(limit);
+            var maxRootVal = (int)Math.Sqrt(_limit);
 
             for(var i = 2; i <= maxRootVal; i++)
             {
                 if(dictionary[i] == true)
                 {
                     var j = i*i;
-                    while(j <= limit)
+                    while(j <= _limit)
                     {
                         dictionary[j] = false;
                         j += i;
@@ -41,8 +50,6 @@ namespace PF.WebAPI.Services
             }
    
             return dictionary.Where(d => d.Value).Select(d => d.Key).ToList();
-
-
         }
     }
 }
