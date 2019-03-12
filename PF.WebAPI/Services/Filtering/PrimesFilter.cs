@@ -16,7 +16,7 @@ namespace PF.WebAPI.Services.Filtering
             _primeTester = primeTester;
         }
 
-        public async Task<IEnumerable<string>> Filter(IEnumerable<string> words)
+        public async Task<List<string>> Filter(IEnumerable<string> words)
         {
             var newWords = new List<string>();
 

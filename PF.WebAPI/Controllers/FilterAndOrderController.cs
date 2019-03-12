@@ -33,7 +33,7 @@ namespace PF.WebAPI.Controllers
         {
             var words = _stringParser.ParseString(stringToTest, delimiter);
 
-            var wordList = (await _wordFilter.Filter(words)).ToList();
+            var wordList = await _wordFilter.Filter(words);
 
             wordList.Sort(_wordSorter.Compare);
 
