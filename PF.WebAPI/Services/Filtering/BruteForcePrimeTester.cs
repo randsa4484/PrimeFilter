@@ -19,18 +19,17 @@ namespace PF.WebAPI.Services.Filtering
             // one less than the square of our largest test prime + 1
 
             var maxTestPrime = _primes.Max();
-            MaxValueSupported = ((maxTestPrime + 1) * (maxTestPrime + 1)) - 1;
+            MaxValueSupported = (maxTestPrime + 1) * (maxTestPrime + 1) - 1;
         }
 
         public int MaxValueSupported { get; }
         
         public async Task<bool> NumberIsPrime(double n)
         {
-            throw new NotImplementedException();
-            //await Task.Run(NumberIsPrimeImp(n));
+           return await Task.Run(() => NumberIsPrimeImp(n));
         }
 
-        public bool NumberIsPrimeImp(double n)
+        private bool NumberIsPrimeImp(double n)
         {
             // treat -ve and +ive values equally 
             var absValue = Math.Abs(n);
@@ -66,7 +65,7 @@ namespace PF.WebAPI.Services.Filtering
             // we ran out of primes
 
             if (absValue > this.MaxValueSupported)
-                throw new NotSupportedException("Value being tested exceeds the maximum currently supported");
+                throw new NumberExceedsPrimeSearchBoundsException("Value being tested exceeds the maximum currently supported", n, MaxValueSupported);
 
             return true;
         }

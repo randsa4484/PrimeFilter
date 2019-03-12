@@ -4,6 +4,7 @@ using System.Threading;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using PF.WebAPI.Services.Filtering;
 
 namespace PF.WebAPI.ExceptionHandling
 {
@@ -21,11 +22,11 @@ namespace PF.WebAPI.ExceptionHandling
             if (context.HttpContext?.Response == null)
                 return;
 
-            if (context.Exception is NotImplementedException)
+            if (context.Exception is NumberExceedsPrimeSearchBoundsException e)
             {
                 context.HttpContext.Response.Clear();
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotImplemented;
-                context.HttpContext.Response.WriteAsync("The action requested is not implemented", new CancellationToken()).Wait();
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.HttpContext.Response.WriteAsync($"{e.Number} was too large for the applied primality test algorithm's limit: {e.Limit}", new CancellationToken()).Wait();
             }
             else
             {

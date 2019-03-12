@@ -86,8 +86,8 @@ namespace PF.WebAPI
             app.UseMvc();
 
             var primesGenerator = app.ApplicationServices.GetService<IPrimesGenerator>();
+            // generate primes 
             primesGenerator.Initialise();
-
         }
     }
 }

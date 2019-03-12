@@ -20,11 +20,16 @@ namespace PF.WebAPI.Controllers
             _wordFilter = wordFilter;
         }
 
-        // GET api/values
-        [HttpGet("SpaceDelimitedFilter")]
-        public async Task<IActionResult> FilterAndOrder(string numbersString)
+        [HttpGet("SpaceDelimited")]
+        public async Task<IActionResult> FilterAndOrder(string stringToTest)
         {
-            var words = _stringParser.ParseString(numbersString, " ");
+            return await FilterAndOrder(stringToTest, " ");
+        }
+
+        [HttpGet("UserDefinedDelimiter")]
+        public async Task<IActionResult> FilterAndOrder(string stringToTest, string delimiter)
+        {
+            var words = _stringParser.ParseString(stringToTest, delimiter);
 
             words = await _wordFilter.Filter(words);
 

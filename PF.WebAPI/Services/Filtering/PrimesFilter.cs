@@ -29,7 +29,7 @@ namespace PF.WebAPI.Services.Filtering
                     {
                         var message = $"Number to be tested ({result}) exceeds the capability of the current prime number tester ({_primeTester.MaxValueSupported})";
                         _logger.LogError(message);
-                        throw new NotSupportedException(message);
+                        throw new NumberExceedsPrimeSearchBoundsException(message, result, _primeTester.MaxValueSupported);
                     }
 
                     addWord = ! await _primeTester.NumberIsPrime(result);

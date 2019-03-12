@@ -14,10 +14,10 @@ namespace PF.WebAPI.Services.Filtering
     {
         public PrimeGeneratorConfigurationInitialiser(ILogger<PrimeGeneratorConfigurationInitialiser> logger, IConfiguration configuration)
         {
-            var limit = configuration["PrimesTesting:MaximumNumberToAccept"];
+            var limit = configuration["PrimesTesting:LimitForPrimeGeneration"];
 
             if (!int.TryParse(limit, out var lim))
-                throw new Exception("");
+                throw new Exception("PrimesTesting:LimitForPrimeGeneration needs to be set");
             
             Limit = lim;
         }

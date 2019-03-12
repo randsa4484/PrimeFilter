@@ -30,38 +30,45 @@ namespace PF.Tests
         [TestMethod]
         public void Zero_Not_Prime()
         {
-            Assert.IsFalse(_tester.NumberIsPrimeImp(0));           
+            Assert.IsFalse(_tester.NumberIsPrime(0).Result);           
         }     
         [TestMethod]
         
         public void One_Not_Prime()
         {
-            Assert.IsFalse(_tester.NumberIsPrimeImp(1));
+            Assert.IsFalse(_tester.NumberIsPrime(1).Result);
         }
         
         [TestMethod]
         public void NonInteger_Cant_Be_Prime()
         {
-            Assert.IsFalse(_tester.NumberIsPrimeImp(3.6));           
+            Assert.IsFalse(_tester.NumberIsPrime(3.6).Result);           
         }
 
         [TestMethod]
         public void Negative_NonInteger_Cant_Be_Prime()
         {
-            Assert.IsFalse(_tester.NumberIsPrimeImp(-3789.345));           
+            Assert.IsFalse(_tester.NumberIsPrime(-3789.345).Result);           
         }
 
         [TestMethod]
         public void Square_Number_Cannot_Be_Prime()
         {
-            Assert.IsFalse(_tester.NumberIsPrimeImp(36));           
+            Assert.IsFalse(_tester.NumberIsPrime(36).Result);           
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotSupportedException))]
-        public void Exceeding_MaxSupportedValue_Throws_NotSupportedException()
+        [ExpectedException(typeof(NumberExceedsPrimeSearchBoundsException))]
+        public void Exceeding_MaxSupportedValue_Throws_NumberExceedsPrimeSearchBoundsException()
         {
-            Assert.IsTrue(_tester.NumberIsPrimeImp(37));           
+            try
+            {
+                var res = _tester.NumberIsPrime(37).Result;
+            }
+            catch (AggregateException e)
+            {
+                throw e.InnerException;
+            }
         }
 
         [TestMethod]
@@ -69,7 +76,7 @@ namespace PF.Tests
         {
             for (var i = 0; i < 36; i++)
             {
-                var value = _tester.NumberIsPrimeImp(i);
+                var value = _tester.NumberIsPrime(i).Result;
 
                 switch (i)
                 {

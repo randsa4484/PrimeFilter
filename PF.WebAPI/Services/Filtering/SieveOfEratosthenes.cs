@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 
@@ -21,8 +22,16 @@ namespace PF.WebAPI.Services.Filtering
 
         public void Initialise()
         {
+            _primes = null;
+
+            var s = new Stopwatch();
+            s.Start();
             var primes = GeneratePrimes().ToList();
-            _logger.LogInformation($"Sieve of Eratosthenes generated {primes.Count()} primes from {primes.Min()} to {primes.Max()}");
+            s.Stop();
+            if(primes.Any())
+                _logger.LogInformation($"Sieve of Eratosthenes generated {primes.Count} primes ranging from {primes.Min()} to {primes.Max()} in {s.Elapsed.TotalSeconds} seconds");
+            else
+                _logger.LogError("Sieve of Eratosthenes generated no primes");
             _primes = primes;
         }
 
