@@ -52,12 +52,6 @@ namespace PF.Tests
         }
 
         [TestMethod]
-        public void Square_Number_Cannot_Be_Prime()
-        {
-            Assert.IsFalse(_tester.NumberIsPrime(36).Result);           
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(NumberExceedsPrimeSearchBoundsException))]
         public void Exceeding_MaxSupportedValue_Throws_NumberExceedsPrimeSearchBoundsException()
         {

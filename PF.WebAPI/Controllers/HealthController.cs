@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using PF.WebAPI.Services.Filtering;
+using PF.WebAPI.Services.Sorting;
 
 namespace PF.WebAPI.Controllers
 {
@@ -9,11 +10,13 @@ namespace PF.WebAPI.Controllers
     {
         private readonly IPrimeTester _primeTester;
         private readonly IWordFilter _wordFilter;
+        private readonly IWordSorter _wordSorter;
 
-        public HealthController(IPrimeTester primeTester, IWordFilter wordFilter)
+        public HealthController(IPrimeTester primeTester, IWordFilter wordFilter, IWordSorter wordSorter)
         {
             _primeTester = primeTester;
             _wordFilter = wordFilter;
+            _wordSorter = wordSorter;
         }
 
         [HttpGet]
@@ -21,6 +24,7 @@ namespace PF.WebAPI.Controllers
         {
             var WordFilter = $"Word filter in use is {_wordFilter.Name}";
             var MaxSupportedNumber = _primeTester.MaxValueSupported;
+            var SortCriteria = _wordSorter.Description;
 
             var ApplicationVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
 
@@ -28,6 +32,7 @@ namespace PF.WebAPI.Controllers
             {
                 WordFilter,
                 MaxSupportedNumber,
+                SortCriteria,
                 ApplicationVersion
             };
         }

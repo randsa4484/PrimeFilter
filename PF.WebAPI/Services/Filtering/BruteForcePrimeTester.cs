@@ -53,15 +53,7 @@ namespace PF.WebAPI.Services.Filtering
                     return false;
             }
 
-            // we've tested with all our primes.
-            // Need to test that we haven't prematurely run out of primes to test with
-
-            var sqrRoot = Math.Sqrt(testVal);
-
-            // if number is square, it can't be prime
-            if (sqrRoot % 1 < double.Epsilon) return false;
-
-            // but if the value tested exceeds max supported,
+            // we've tested with all our primes. If the value tested exceeds max supported,
             // we ran out of primes
 
             if (absValue > this.MaxValueSupported)
